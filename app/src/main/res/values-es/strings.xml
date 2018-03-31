@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Password Box</string>
+    <string name="default_password_name">Contraseña del Repositorio</string>
+    <!--Valores de la ventana de login-->
+    <string name="dialog_login_message">Ya existe un repositorio para el usuario, acceda con su usuario y contraseña</string>
+    <string name="dialog_login_title">El repositorio ya existe</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Acceder</string>
+    <string name="action_register">Crear Repositorio</string>
+    <!-- Valores de la ventana edicion-->
+    <string name="name_label">Nombre</string>
+    <string name="url_label">URL</string>
+    <string name="user_label">Usuario</string>
+    <string name="password_label">Contraseña</string>
+    <string name="delete_title">Eliminar Contraseña</string>
+    <string name="delete_message">¿Desea borrar la contraseña del repositorio?</string>
+    <string name="clip_text"> al portapapeles</string>
+    <string name="save_label">Guardar</string>
+    <string name="delete_label">Borrar</string>
+    <string name="cancel_label">Cancelar</string>
+    <string name="how_work">Como funciona</string>
+    <string name="volver_button">Volver</string>
+    <string name="app_info">
+        Bienvenidos a Password Box.\n\n
+        En esta aplicación podrás almacenar de forma segura tus contraseñas.\n\n
+        La aplicación almacenara tu repositorio de contraseñas
+        encriptado con la contraseña que elijas en el directorio raíz
+        de tu dispositivo, donde podrás encontrarlo con el siguiente
+        formato \"email elegido+.keys\" por si deseas crear
+        una copia de seguridad en google drive.\n\n
+        Recuerda no olvidar tu contraseña maestra o no podrás recuperar tus contraseñas.
+    </string>
+    <!-- Strings related to login -->
+    <string name="password">Contraseña</string>
+    <string name="description">Contraseña</string>
+    <string name="navigation_drawer_open">Abrir menu desplegable</string>
+    <string name="navigation_drawer_close">Cerrar menu desplegable</string>
+    <string name="action_settings">Opciones</string>
+    <string name="title_activity_login">Password Box</string>
+    <string name="label_combo">Tipo de Autenticación</string>
+    <string name="registrarse">Crear Repositorio</string>
+    <string name="remember">Recordarme?</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="error_invalid_email">El email es inválido</string>
+    <string name="error_invalid_password">Contraseña demasiado corta, debe ser de al menos 6 caracteres</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_field_required">Campo requerido</string>
+</resources>

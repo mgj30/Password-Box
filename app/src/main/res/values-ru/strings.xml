@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Password Box</string>
+    <string name="default_password_name">Пароль</string>
+    <!--Valores de la ventana de login-->
+    <string name="dialog_login_message">Войдите в систему с вашим логином и паролем</string>
+    <string name="dialog_login_title">Этот пользователь уже существует</string>
+    <string name="prompt_email">Электронная почта</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_register">Создать</string>
+    <!-- Valores de la ventana edicion-->
+    <string name="name_label">Название</string>
+    <string name="url_label">URL</string>
+    <string name="user_label">Пользователь</string>
+    <string name="password_label">Пароль</string>
+    <string name="delete_title">Удалить пароль?</string>
+    <string name="delete_message">Вы хотите удалить пароль?</string>
+    <string name="clip_text">в буфер обмена</string>
+    <string name="save_label">Сохранить</string>
+    <string name="delete_label">Удалить</string>
+    <string name="cancel_label">Отменить</string>
+    <string name="how_work">принцип работы</string>
+    <string name="volver_button">назад</string>
+    <string name="app_info">
+        Добро пожаловать в Password Box.\n\n
+         В этом приложении вы сможете безопасно хранить ваши пароли.\n\n
+         Приложение будет хранить ваши пароли зашифрованными с помощью
+        пароля, который вы выберете в корневом каталоге вашего устройства.
+        Вы можете найти этот файл со следующим выбранным форматом: \"ваша электронная почта  +.keys\",
+        если вы хотите создать резервную копию на Google Диске.\n\n
+         Не забывайте  свой главный пароль, иначе вы не сможете восстановить свои пароли.
+    </string>
+    <!-- Strings related to login -->
+    <string name="password">Пароль</string>
+    <string name="description">Пароль</string>
+    <string name="navigation_drawer_open">Открыть меню</string>
+    <string name="navigation_drawer_close">Закрыть меню</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_login">Password Box</string>
+    <string name="label_combo">Tipo de Autenticación</string>
+    <string name="registrarse">Создать</string>
+    <string name="remember">Сохранить?</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="error_invalid_email">Электронная почта не существует</string>
+    <string name="error_invalid_password">Пароль слишком короткий, должно быть не менее 6 символов</string>
+    <string name="error_incorrect_password">Неверный пароль</string>
+    <string name="error_field_required">Обязательное поле</string>
+</resources>
