@@ -39,7 +39,8 @@ public class PasswordRepository
                 password_name,
                 password_description,
                 password_user,
-                password_value));
+                password_value,
+                Password.TYPE_ITEM));
 
     }
     public void setPasswordList(List<Password> passwordList) {

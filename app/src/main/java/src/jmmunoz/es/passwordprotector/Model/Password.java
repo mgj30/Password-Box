@@ -7,7 +7,13 @@ import com.google.gson.Gson;
  */
 
 public class Password {
+
+    public static int TYPE_GROUP = 0;
+    public static int TYPE_ITEM =1;
+
+
     private int password_id;
+    private int password_type;
     private String password_url;
     private String password_name;
     private String password_description;
@@ -18,17 +24,26 @@ public class Password {
 
     }
 
-    public Password(String password_url,String password_name,String password_description,String password_user,String password_value){
+    public Password(String password_url,String password_name,String password_description,String password_user,String password_value,int password_type){
         this.password_url=password_url;
         this.password_name=password_name;
         this.password_description=password_description;
         this.password_user=password_user;
         this.password_value=password_value;
+        this.password_type=password_type;
 
     }
 
     public int getPassword_id() {
         return password_id;
+    }
+
+    public int getPassword_type() {
+        return password_type;
+    }
+
+    public void setPassword_type(int password_type) {
+        this.password_type = password_type;
     }
 
     public void setPassword_id(int password_id) {
