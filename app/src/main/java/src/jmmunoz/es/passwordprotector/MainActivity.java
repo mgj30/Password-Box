@@ -7,6 +7,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         //inicializar el boton añadir password
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,19 +92,19 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
 
 
 
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
+        navigationView.setNavigationItemSelectedListener(this);
 
         cargarLista();
 
@@ -182,11 +183,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.new_group) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.new_password) {
+            Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
+            Bundle b = new Bundle();
+            b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+            b.putString("repositori_user", rep.getRepository_user()); //Your id
+            b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+            b.putString("item_edit", ""); //Your id
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
+        }/* else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
@@ -194,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

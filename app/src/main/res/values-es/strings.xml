@@ -25,10 +25,10 @@
     <string name="app_info">
         Bienvenidos a Password Box.\n\n
         En esta aplicación podrás almacenar de forma segura tus contraseñas.\n\n
-        La aplicación almacenara tu repositorio de contraseñas
+        La aplicación almacenará tu repositorio de contraseñas
         encriptado con la contraseña que elijas en el directorio raíz
         de tu dispositivo, donde podrás encontrarlo con el siguiente
-        formato \"email elegido+.keys\" por si deseas crear
+        formato \"example@email.com.keys\" por si deseas crear
         una copia de seguridad en google drive.\n\n
         Recuerda no olvidar tu contraseña maestra o no podrás recuperar tus contraseñas.
     </string>
@@ -47,4 +47,8 @@
     <string name="error_invalid_password">Contraseña demasiado corta, debe ser de al menos 6 caracteres</string>
     <string name="error_incorrect_password">Contraseña incorrecta</string>
     <string name="error_field_required">Campo requerido</string>
+
+    <!--menu items-->
+    <string name="add_group">Nuevo Grupo (Próximamente)</string>
+    <string name="add_password">Nueva Contraseña</string>
 </resources>

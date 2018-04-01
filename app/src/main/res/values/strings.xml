@@ -16,7 +16,7 @@
          The application will store your passwords
          encrypted with the password you choose in the root directory
          of your device, where you can find it with the following
-         format: \"email + .keys\", if you want to create
+         format: \"example@email.com.keys\", if you want to create
          a backup on google drive.\n\n
          Remember not to forget your master password or you will not be able to recover your passwords.
     </string>
@@ -46,4 +46,10 @@
     <string name="error_invalid_password">Password too short, must be at least 6 characters</string>
     <string name="error_incorrect_password">Wrong password</string>
     <string name="error_field_required">Required Field</string>
+
+    <!--menu items-->
+    <string name="add_group">Add new group (Coming soon)</string>
+    <string name="add_password">Add new password</string>
+
+
 </resources>
