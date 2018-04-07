@@ -2,14 +2,16 @@ package src.jmmunoz.es.passwordprotector.Model;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 /**
  * Created by mgj30 on 01/11/2017.
  */
 
 public class Password {
 
-    public static int TYPE_GROUP = 0;
-    public static int TYPE_ITEM =1;
+    public static int TYPE_GROUP = 1;
+    public static int TYPE_ITEM =0;
 
 
     private int password_id;
@@ -19,6 +21,8 @@ public class Password {
     private String password_description;
     private String password_user;
     private String password_value;
+
+    private List<Password> lista_password;
 
     public Password(){
 
@@ -32,6 +36,14 @@ public class Password {
         this.password_value=password_value;
         this.password_type=password_type;
 
+    }
+
+    public List<Password> getLista_password() {
+        return lista_password;
+    }
+
+    public void setLista_password(List<Password> lista_password) {
+        this.lista_password = lista_password;
     }
 
     public int getPassword_id() {

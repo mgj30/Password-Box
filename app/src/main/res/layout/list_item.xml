@@ -9,39 +9,53 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light">
+
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
+        <TextView
+            android:id="@+id/elements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imagen"
+            android:layout_weight="1"
+            android:paddingLeft="60dp"
+            android:text="X - Elementos" />
 
         <TextView
             android:id="@+id/nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView2"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageView2"
+            android:layout_toEndOf="@+id/imagen"
+            android:layout_toStartOf="@+id/edit"
+            android:layout_weight="1"
             android:padding="10dp"
-            android:text=""
+            android:text="pppp"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
-
-        <TextView
-            android:id="@+id/elements"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/edit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/nombre"
-            android:layout_toEndOf="@+id/imageView2"
-            android:paddingLeft="10dp"
-            android:text="Elementos" />
+            android:layout_alignParentTop="true"
+            android:background="@android:color/background_light"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+        <!--app:srcCompat="@android:drawable/ic_menu_sort_by_size"--><![CDATA[
+            />
 
+        ]]>
     </RelativeLayout>
+
 </LinearLayout>

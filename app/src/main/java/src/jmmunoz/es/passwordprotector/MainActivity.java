@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private EncodeDecode decoder;
     private String repositori_pass;
     private String repositori_user;
+    private int item_group;
     private String repositori_file;
     private PasswordAdapter arrayAdapter;
 
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity
             repositori_pass = b.getString("repositori_pass");
             repositori_user = b.getString("repositori_user");
             repositori_file = b.getString("repositori_file");
+            item_group = b.getInt("item_group");
+
         }
 
 
@@ -185,6 +188,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.new_group) {
             // Handle the camera action
+            Intent intent = new Intent(MainActivity.this, EditGroupActivity.class);
+            Bundle b = new Bundle();
+            b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+            b.putString("repositori_user", rep.getRepository_user()); //Your id
+            b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+            b.putString("item_edit", ""); //Your id
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
         } else if (id == R.id.new_password) {
             Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
             Bundle b = new Bundle();
@@ -192,6 +204,8 @@ public class MainActivity extends AppCompatActivity
             b.putString("repositori_user", rep.getRepository_user()); //Your id
             b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
             b.putString("item_edit", ""); //Your id
+            b.putInt("item_group", item_group);
+
             intent.putExtras(b); //Put your id to your next Intent
             startActivity(intent);
             finish();

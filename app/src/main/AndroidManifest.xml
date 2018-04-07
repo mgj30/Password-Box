@@ -40,6 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditPasswordActivity" />
+        <activity android:name=".EditGroupActivity" />
         <activity android:name=".HowWorkActivity"></activity>
     </application>
 

@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -17,8 +18,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,9 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
 
 
     private static class ViewHolder {
+        private ImageView image;
+        private ImageView edit;
+        private TextView elements;
         private TextView nombre;
     }
 
@@ -65,8 +74,12 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
             convertView = LayoutInflater.from(this.getContext())
                     .inflate(R.layout.list_item, parent, false);
 
+
             viewHolder = new ViewHolder();
             viewHolder.nombre = (TextView) convertView.findViewById(R.id.nombre);
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.imagen);
+            viewHolder.elements = (TextView) convertView.findViewById(R.id.elements);
+            viewHolder.edit= (ImageView) convertView.findViewById(R.id.edit);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -79,11 +92,66 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
             content_nombre.setSpan(new UnderlineSpan(), 0, content_nombre.length(), 0);
             viewHolder.nombre.setText(content_nombre);
             viewHolder.nombre.setId(item.getPassword_id());
-            viewHolder.nombre.setOnClickListener(new View.OnClickListener() {
+
+            String password_img = "@android:drawable/ic_lock_idle_lock";
+            String group_img = "@android:drawable/ic_menu_sort_by_size";
+
+
+            if(item.getPassword_type()==Password.TYPE_GROUP) {
+                Drawable res = ctx.getResources().getDrawable(ctx.getResources().getIdentifier(group_img, null, ctx.getPackageName()));
+                viewHolder.image.setImageDrawable(res);
+
+
+            }
+            if(item.getPassword_type()==Password.TYPE_ITEM){
+                Drawable res = ctx.getResources().getDrawable(ctx.getResources().getIdentifier(password_img, null, ctx.getPackageName()));
+                viewHolder.image.setImageDrawable(res);
+
+                viewHolder.elements.setText("");
+            }
+
+            convertView.setId(item.getPassword_id());
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    TextView texto = (TextView) view;
+                    LinearLayout texto = (LinearLayout) view;
+
+                    Password p = rep.getPasswordById(texto.getId());
+                    if(p.getPassword_type()==Password.TYPE_ITEM) {
+
+                        Intent intent = new Intent(ctx, EditPasswordActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Bundle b = new Bundle();
+                        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+                        b.putString("repositori_user", rep.getRepository_user()); //Your id
+                        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
+                        b.putInt("item_edit", texto.getId()); //Your id
+                        intent.putExtras(b); //Put your id to your next Intent
+                        ctx.startActivity(intent);
+                        ((Activity) ctx).finish();
+                    }else{
+                        Intent intent = new Intent(ctx, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Bundle b = new Bundle();
+                        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+                        b.putString("repositori_user", rep.getRepository_user()); //Your id
+                        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
+                        b.putInt("item_group", texto.getId()); //Your id
+                        intent.putExtras(b); //Put your id to your next Intent
+                        ctx.startActivity(intent);
+                        ((Activity) ctx).finish();
+                    }
+                }
+            });
+
+            viewHolder.edit.setId(item.getPassword_id());
+            viewHolder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    LinearLayout texto = (LinearLayout) view;
                     Intent intent = new Intent(ctx, EditPasswordActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle b = new Bundle();
