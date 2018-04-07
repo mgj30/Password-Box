@@ -369,12 +369,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         return false;
                     }else {
 
-                        //si el repositorio existe intentamos añadir los id a las contraseñas que no tienen
-
+                        //reiniciamos los id
+                        int i=1;
                         for(Password p:rep.getPasswordList()){
-                            if(p.getPassword_id()==0){
-                                p.setPassword_id(rep.getNewId());
-                            }
+                            p.setPassword_id(i);
+                            i++;
                         }
 
                         fm.setFileContent(

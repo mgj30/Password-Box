@@ -56,17 +56,26 @@ public class PasswordRepository
     }
 
     public int getLastId(){
-        return getPasswordList().get(getPasswordList().size()-1).getPassword_id();
+        if(getPasswordList().size()>0) {
+            return getPasswordList().get(getPasswordList().size()-1).getPassword_id();
+        }else{
+            return 1;
+        }
     }
 
     public int getNewId(){
-        return getPasswordList().get(getPasswordList().size()-1).getPassword_id()+1;
+
+        if(getPasswordList().size()>0) {
+            return getPasswordList().get(getPasswordList().size() - 1).getPassword_id() + 1;
+        }else{
+            return 1;
+        }
     }
 
     public void updatePassword(Password p){
         List<Password> lista = getPasswordList();
         for(Password i:lista){
-            if(i.getPassword_name().equalsIgnoreCase(p.getPassword_name())){
+            if(i.getPassword_id()==p.getPassword_id()){
                 lista.remove(i);
             }
         }
