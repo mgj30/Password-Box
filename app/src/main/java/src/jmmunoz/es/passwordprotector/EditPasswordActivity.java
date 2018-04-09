@@ -22,8 +22,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
+import src.jmmunoz.es.passwordprotector.Utils.Constants;
 import src.jmmunoz.es.passwordprotector.Utils.EncodeDecode;
 import src.jmmunoz.es.passwordprotector.Utils.FilePasswordManager;
+import src.jmmunoz.es.passwordprotector.Utils.MyCountDownTimer;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -33,7 +35,6 @@ public class EditPasswordActivity extends AppCompatActivity {
     private String repositori_pass;
     private String repositori_user;
     private String repositori_file;
-    private int item_edit;
     public EditText nombre_text;
     public EditText url_text;
     public EditText usuario_text;
@@ -46,12 +47,16 @@ public class EditPasswordActivity extends AppCompatActivity {
     public Button delete_button ;
     public Button cancel_button ;
     public Password p;
+    public Password p_param;
     private AdView mAdView;
+
+    private MyCountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_password);
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL);
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
 
@@ -67,10 +72,21 @@ public class EditPasswordActivity extends AppCompatActivity {
             repositori_pass = b.getString("repositori_pass");
             repositori_user = b.getString("repositori_user");
             repositori_file = b.getString("repositori_file");
-            item_edit= b.getInt("item_edit");
+            p_param = (Password) b.getSerializable("password");
+
         }
         CargarRepositorio();
-        p = rep.getPasswordById(item_edit);
+
+
+        if(p_param!=null && p_param.getId_padre()==0 && p_param.getPassword_type()==Password.TYPE_ITEM) {
+            p = rep.getPasswordById(p_param.getPassword_id());
+        }
+
+        if(p_param!=null && p_param.getId_padre()!=0 && p_param.getPassword_type()==Password.TYPE_ITEM) {
+            p = rep.getPasswordInGroupById(p_param.getId_padre(), p_param.getPassword_id());
+        }
+
+
         nombre_text = (EditText) findViewById(R.id.nombre_text);
         url_text = (EditText) findViewById(R.id.url_text);
         usuario_text = (EditText) findViewById(R.id.usuario_text);
@@ -135,19 +151,47 @@ public class EditPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Password p = rep.getPasswordById(item_edit);
+                    Password p=null;
+
+                    if(p_param!=null && p_param.getId_padre()==0 && p_param.getPassword_type()==Password.TYPE_ITEM) {
+                        p = rep.getPasswordById(p_param.getPassword_id());
+                    }
+
+                    if(p_param!=null && p_param.getId_padre()!=0 && p_param.getPassword_type()==Password.TYPE_ITEM) {
+                        p = rep.getPasswordInGroupById(p_param.getId_padre(), p_param.getPassword_id());
+                    }
+
 
                     if(p==null) {
                         p = new Password();
-                        p.setPassword_id(rep.getNewId());
+
+
+                        if(p_param!=null) {
+                            p.setId_padre(p_param.getPassword_id());
+                            p.setPassword_id(rep.getNewIdFromGroup(p_param.getPassword_id()));
+                        }else{
+                            p.setPassword_id(rep.getNewId());
+                        }
                     }
+
+
+                    p.setPassword_type(Password.TYPE_ITEM);
 
                     p.setPassword_name(nombre_text.getText().toString());
                     p.setPassword_url(url_text.getText().toString());
                     p.setPassword_user(usuario_text.getText().toString());
                     if(!password_text.getText().toString().equalsIgnoreCase("**********"))
                         p.setPassword_value(password_text.getText().toString());
-                    rep.updatePassword(p);
+
+
+
+
+                    if(p.getId_padre()==0) {
+                        rep.updatePassword(p);
+                    }else {
+                        rep.updatePasswordInGroup(p.getId_padre(),p);
+                    }
+
                     fm.setFileContent(
                             rep.getRepository_user() + ".keys",
                             decoder.encrypt(rep.toJson(), rep.getRepositoryCode())
@@ -157,6 +201,13 @@ public class EditPasswordActivity extends AppCompatActivity {
                     b.putString("repositori_pass", rep.getRepositoryCode().toString());
                     b.putString("repositori_user", rep.getRepository_user().toString());
                     b.putString("repositori_file", rep.getRepository_user().toString()+ ".keys");
+
+                    if(p.getId_padre()!=0){
+                        Password padre = rep.getPasswordById(p_param.getId_padre());
+                        b.putSerializable("password", padre);
+                    }
+
+
                     intent.putExtras(b); //Put your id to your next Intent
                     startActivity(intent);
                     setResult(RESULT_OK,intent);
@@ -188,7 +239,13 @@ public class EditPasswordActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 try {
-                    rep.deleteItem(item_edit);
+
+                    if(p_param.getId_padre()==0) {
+                        rep.deleteItem(p_param.getPassword_id());
+                    }else {
+                        rep.deleteItemInGroup(p_param.getId_padre(),p.getPassword_id());
+                    }
+
                     fm.setFileContent(
                             rep.getRepository_user() + ".keys",
                             decoder.encrypt(rep.toJson(), rep.getRepositoryCode())
@@ -223,7 +280,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(texto,texto);
         ClipboardManager clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, mensaje+getResources().getString(R.string.clip_text), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, mensaje+" "+getResources().getString(R.string.clip_text), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -239,6 +296,15 @@ public class EditPasswordActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
 
+    }
+
+    @Override
+    public void onUserInteraction(){
+        super.onUserInteraction();
+
+        //Reset the timer on user interaction...
+        countDownTimer.cancel();
+        countDownTimer.start();
     }
 
     private void CargarRepositorio(){

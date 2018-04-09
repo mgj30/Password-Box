@@ -15,7 +15,9 @@
     <string name="user_label">Usuario</string>
     <string name="password_label">Contraseña</string>
     <string name="delete_title">Eliminar Contraseña</string>
+    <string name="delete_title_group">Eliminar grupo</string>
     <string name="delete_message">¿Desea borrar la contraseña del repositorio?</string>
+    <string name="delete_message_group">¿Desea borrar el grupo del repositorio?</string>
     <string name="clip_text"> al portapapeles</string>
     <string name="save_label">Guardar</string>
     <string name="delete_label">Borrar</string>
@@ -49,6 +51,9 @@
     <string name="error_field_required">Campo requerido</string>
 
     <!--menu items-->
-    <string name="add_group">Nuevo Grupo (Próximamente)</string>
+    <string name="home">Inicio</string>
+    <string name="add_group">Nuevo Grupo</string>
     <string name="add_password">Nueva Contraseña</string>
+
+    <string name="elementos">Contraseñas</string>
 </resources>

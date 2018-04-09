@@ -22,8 +22,10 @@ import com.google.gson.Gson;
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordAdapter;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
+import src.jmmunoz.es.passwordprotector.Utils.Constants;
 import src.jmmunoz.es.passwordprotector.Utils.EncodeDecode;
 import src.jmmunoz.es.passwordprotector.Utils.FilePasswordManager;
+import src.jmmunoz.es.passwordprotector.Utils.MyCountDownTimer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,19 +35,24 @@ public class MainActivity extends AppCompatActivity
     private EncodeDecode decoder;
     private String repositori_pass;
     private String repositori_user;
-    private int item_group;
     private String repositori_file;
     private PasswordAdapter arrayAdapter;
+
+    private Password p_param;
+    private MyCountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL);
         IniciarVariables();
         CargarRepositorio();
         InicilizarComponentes();
 
+
     }
+
 
     private void IniciarVariables(){
 
@@ -58,10 +65,8 @@ public class MainActivity extends AppCompatActivity
             repositori_pass = b.getString("repositori_pass");
             repositori_user = b.getString("repositori_user");
             repositori_file = b.getString("repositori_file");
-            item_group = b.getInt("item_group");
-
+            p_param = (Password) b.getSerializable("password");
         }
-
 
     }
 
@@ -79,25 +84,6 @@ public class MainActivity extends AppCompatActivity
     private void InicilizarComponentes(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //inicializar el boton añadir password
-
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
-                Bundle b = new Bundle();
-                b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
-                b.putString("repositori_user", rep.getRepository_user()); //Your id
-                b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
-                b.putString("item_edit", ""); //Your id
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
-                finish();
-            }
-        });*/
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -109,19 +95,41 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(p_param!=null && p_param.getPassword_type()==Password.TYPE_GROUP){
+            Menu menuNav=navigationView.getMenu();
+            MenuItem nav_item2 = menuNav.findItem(R.id.new_group);
+            nav_item2.setEnabled(false);
+        }
+
         cargarLista();
 
     }
 
     public void cargarLista(){
         try {
-            arrayAdapter = new PasswordAdapter(this,R.id.lista_password,fm,rep);
+
+            int id_group=0;
+
+            if(p_param!=null && p_param.getPassword_type()==Password.TYPE_GROUP) {
+                id_group = p_param.getPassword_id();
+                //actualizar ids de la lista interna del grupo
+                for(Password p:rep.getPasswordList()){
+                    if(p.getPassword_id()==id_group){
+                        for(Password j:p.getLista_password()){
+                            j.setId_padre(p.getPassword_id());
+                        }
+                    }
+
+                }
+                fm.setFileContent(
+                        repositori_user + ".keys",
+                        decoder.encrypt(rep.toJson(), repositori_pass));
+            }
+
+            arrayAdapter = new PasswordAdapter(this,R.id.lista_password,fm,rep, id_group);
             ListView lista = (ListView) findViewById(R.id.lista_password);
             lista.setAdapter(arrayAdapter);
             arrayAdapter.notifyDataSetChanged();
-
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -130,6 +138,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        if(p_param!=null && p_param.getPassword_type()==Password.TYPE_GROUP){
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            Bundle b = new Bundle();
+            b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+            b.putString("repositori_user", rep.getRepository_user()); //Your id
+            b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+            //b.putSerializable("password", p_param);
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
+        }
+
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -193,18 +215,27 @@ public class MainActivity extends AppCompatActivity
             b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
             b.putString("repositori_user", rep.getRepository_user()); //Your id
             b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
-            b.putString("item_edit", ""); //Your id
+            //b.putSerializable("password", p_param);
             intent.putExtras(b); //Put your id to your next Intent
             startActivity(intent);
             finish();
-        } else if (id == R.id.new_password) {
+        } else if (id == R.id.home) {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            Bundle b = new Bundle();
+            b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+            b.putString("repositori_user", rep.getRepository_user()); //Your id
+            b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+            //b.putSerializable("password", p_param);
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.new_password) {
             Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
             Bundle b = new Bundle();
             b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
             b.putString("repositori_user", rep.getRepository_user()); //Your id
             b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
-            b.putString("item_edit", ""); //Your id
-            b.putInt("item_group", item_group);
+            b.putSerializable("password", p_param);
 
             intent.putExtras(b); //Put your id to your next Intent
             startActivity(intent);
@@ -222,5 +253,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    @Override
+    public void onUserInteraction(){
+        super.onUserInteraction();
+
+        //Reset the timer on user interaction...
+        countDownTimer.cancel();
+        countDownTimer.start();
     }
 }

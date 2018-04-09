@@ -26,7 +26,9 @@
     <string name="user_label">Username</string>
     <string name="password_label">Password</string>
     <string name="delete_title">Delete password</string>
+    <string name="delete_title_group">Delete group</string>
     <string name="delete_message">Do you want delete password from repository?</string>
+    <string name="delete_message_group">Do you want delete group from repository?</string>
     <string name="clip_text">to clipboard</string>
     <string name="save_label">Save</string>
     <string name="delete_label">Delete</string>
@@ -48,10 +50,11 @@
     <string name="error_field_required">Required Field</string>
 
     <!--menu items-->
-    <string name="add_group">Add new group (Coming soon)</string>
+    <string name="home">Home</string>
+    <string name="add_group">Add new group</string>
     <string name="add_password">Add new password</string>
 
-    <string name="elementos">Elements</string>
+    <string name="elementos">Passwords</string>
 
 
 

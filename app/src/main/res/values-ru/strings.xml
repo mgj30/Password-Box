@@ -15,7 +15,9 @@
     <string name="user_label">Пользователь</string>
     <string name="password_label">Пароль</string>
     <string name="delete_title">Удалить пароль?</string>
+    <string name="delete_title_group">Удалить группу</string>
     <string name="delete_message">Вы хотите удалить пароль?</string>
+    <string name="delete_message_group">Вы хотите удалить группу?</string>
     <string name="clip_text">в буфер обмена</string>
     <string name="save_label">Сохранить</string>
     <string name="delete_label">Удалить</string>
@@ -47,6 +49,9 @@
     <string name="error_field_required">Обязательное поле</string>
 
     <!--menu items-->
-    <string name="add_group">Создать группу (Скоро)</string>
+    <string name="home">Главная</string>
+    <string name="add_group">Создать группу</string>
     <string name="add_password">Новый пароль</string>
+
+    <string name="elementos">Пароли</string>
 </resources>

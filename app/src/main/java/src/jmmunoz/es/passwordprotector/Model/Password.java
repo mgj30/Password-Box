@@ -2,13 +2,15 @@ package src.jmmunoz.es.passwordprotector.Model;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mgj30 on 01/11/2017.
  */
 
-public class Password {
+public class Password implements Serializable{
 
     public static int TYPE_GROUP = 1;
     public static int TYPE_ITEM =0;
@@ -21,6 +23,7 @@ public class Password {
     private String password_description;
     private String password_user;
     private String password_value;
+    private int id_padre;
 
     private List<Password> lista_password;
 
@@ -38,9 +41,22 @@ public class Password {
 
     }
 
-    public List<Password> getLista_password() {
-        return lista_password;
+
+    public int getId_padre() {
+        return id_padre;
     }
+
+    public void setId_padre(int id_padre) {
+        this.id_padre = id_padre;
+    }
+
+    public List<Password> getLista_password() {
+        if(lista_password==null)
+            return new ArrayList<Password>();
+        else
+            return lista_password;
+    }
+
 
     public void setLista_password(List<Password> lista_password) {
         this.lista_password = lista_password;
@@ -49,6 +65,7 @@ public class Password {
     public int getPassword_id() {
         return password_id;
     }
+
 
     public int getPassword_type() {
         return password_type;

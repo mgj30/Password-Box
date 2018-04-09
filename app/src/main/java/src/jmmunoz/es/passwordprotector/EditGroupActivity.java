@@ -21,8 +21,10 @@ import com.google.gson.Gson;
 
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
+import src.jmmunoz.es.passwordprotector.Utils.Constants;
 import src.jmmunoz.es.passwordprotector.Utils.EncodeDecode;
 import src.jmmunoz.es.passwordprotector.Utils.FilePasswordManager;
+import src.jmmunoz.es.passwordprotector.Utils.MyCountDownTimer;
 
 public class EditGroupActivity extends AppCompatActivity {
 
@@ -32,25 +34,23 @@ public class EditGroupActivity extends AppCompatActivity {
     private String repositori_pass;
     private String repositori_user;
     private String repositori_file;
-    private int item_edit;
+    private Password p_param;
     public EditText nombre_text;
-    public EditText url_text;
-    public EditText usuario_text;
-    public TextInputEditText password_text;
-    public ImageButton name_copy;
-    public ImageButton url_copy;
-    public ImageButton user_copy;
-    public ImageButton password_copy;
+
     public Button button_save ;
     public Button delete_button ;
     public Button cancel_button ;
     public Password p;
     private AdView mAdView;
 
+    private MyCountDownTimer countDownTimer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL);
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
 
@@ -66,53 +66,17 @@ public class EditGroupActivity extends AppCompatActivity {
             repositori_pass = b.getString("repositori_pass");
             repositori_user = b.getString("repositori_user");
             repositori_file = b.getString("repositori_file");
-            item_edit= b.getInt("item_edit");
+            p_param = (Password) b.getSerializable("password");
         }
         CargarRepositorio();
-        p = rep.getPasswordById(item_edit);
+        if(p_param!=null)
+            p = rep.getPasswordById(p_param.getPassword_id());
+
         nombre_text = (EditText) findViewById(R.id.nombre_text);
-        url_text = (EditText) findViewById(R.id.url_text);
-        usuario_text = (EditText) findViewById(R.id.usuario_text);
-        password_text = (TextInputEditText) findViewById(R.id.password_text);
-
-        name_copy = (ImageButton)findViewById(R.id.name_copy);
-        name_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copiar(p.getPassword_name(),getResources().getString(R.string.name_label));
-            }
-        });
-        url_copy = (ImageButton)findViewById(R.id.url_copy);
-        url_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copiar(p.getPassword_url(),getResources().getString(R.string.url_label));
-            }
-        });
-        user_copy = (ImageButton)findViewById(R.id.user_copy);
-        user_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copiar(p.getPassword_user(),getResources().getString(R.string.user_label));
-            }
-        });
-        password_copy = (ImageButton)findViewById(R.id.password_copy);
-        password_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copiar(p.getPassword_value(),getResources().getString(R.string.password_label));
-            }
-        });
-
 
         if(p!=null) {
             nombre_text.setText(p.getPassword_name());
-            url_text.setText(p.getPassword_url());
-            usuario_text.setText(p.getPassword_user());
-            password_text.setText(p.getPassword_value());
         }
-
-
         cancel_button = (Button) findViewById(R.id.button_cancel);
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +98,10 @@ public class EditGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Password p = rep.getPasswordById(item_edit);
+                    Password p = null;
+
+                    if(p_param!=null)
+                        p = rep.getPasswordById(p_param.getPassword_id());
 
                     if(p==null) {
                         p = new Password();
@@ -142,10 +109,7 @@ public class EditGroupActivity extends AppCompatActivity {
                     }
 
                     p.setPassword_name(nombre_text.getText().toString());
-                    p.setPassword_url(url_text.getText().toString());
-                    p.setPassword_user(usuario_text.getText().toString());
-                    if(!password_text.getText().toString().equalsIgnoreCase("**********"))
-                        p.setPassword_value(password_text.getText().toString());
+                    p.setPassword_type(Password.TYPE_GROUP);
                     rep.updatePassword(p);
                     fm.setFileContent(
                             rep.getRepository_user() + ".keys",
@@ -182,12 +146,12 @@ public class EditGroupActivity extends AppCompatActivity {
 
     private void borrarPassword() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.delete_title);
-        builder.setMessage(R.string.delete_message);
+        builder.setTitle(R.string.delete_title_group);
+        builder.setMessage(R.string.delete_message_group);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 try {
-                    rep.deleteItem(item_edit);
+                    rep.deleteItem(p_param.getPassword_id());
                     fm.setFileContent(
                             rep.getRepository_user() + ".keys",
                             decoder.encrypt(rep.toJson(), rep.getRepositoryCode())
@@ -239,7 +203,14 @@ public class EditGroupActivity extends AppCompatActivity {
         finish();
 
     }
+    @Override
+    public void onUserInteraction(){
+        super.onUserInteraction();
 
+        //Reset the timer on user interaction...
+        countDownTimer.cancel();
+        countDownTimer.start();
+    }
     private void CargarRepositorio(){
         try {
             Gson gson = new Gson(); // Or use new GsonBuilder().create();

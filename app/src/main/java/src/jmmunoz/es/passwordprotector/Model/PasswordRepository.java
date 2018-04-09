@@ -25,6 +25,13 @@ public class PasswordRepository
         return passwordList;
     }
 
+    public List<Password> getListOrGroup(int item_group){
+        if(item_group==0)
+            return passwordList;
+        else
+            return getPasswordById(item_group).getLista_password();
+    }
+
     public void addPasswordToRepository(String password_url,String password_name,String password_description,String password_user,String password_value)
     throws Exception{
 
@@ -43,6 +50,7 @@ public class PasswordRepository
                 Password.TYPE_ITEM));
 
     }
+
     public void setPasswordList(List<Password> passwordList) {
         this.passwordList = passwordList;
     }
@@ -72,15 +80,39 @@ public class PasswordRepository
         }
     }
 
+    public int getNewIdFromGroup(int id_group){
+        Password grupo = getPasswordById(id_group);
+        if(grupo.getLista_password().size()>0) {
+            return grupo.getLista_password().get(grupo.getLista_password().size() - 1).getPassword_id() + 1;
+        }else{
+            return 1;
+        }
+    }
+
     public void updatePassword(Password p){
         List<Password> lista = getPasswordList();
         for(Password i:lista){
             if(i.getPassword_id()==p.getPassword_id()){
                 lista.remove(i);
+                break;
             }
         }
         lista.add(p);
         setPasswordList(lista);
+    }
+
+    public void updatePasswordInGroup(int id_group, Password p){
+        Password group = getPasswordById(id_group);
+        List<Password> lista = group.getLista_password();
+        for(Password i:group.getLista_password()){
+            if(i.getPassword_id()==p.getPassword_id()){
+                lista.remove(i);
+                break;
+            }
+        }
+        lista.add(p);
+        group.setLista_password(lista);
+        updatePassword(group);
     }
 
     public Password getPasswordById(int id){
@@ -89,6 +121,18 @@ public class PasswordRepository
         for(Password i:lista){
             if(i.getPassword_id()==id){
                 item_response=i;
+            }
+        }
+        return item_response;
+    }
+
+    public Password getPasswordInGroupById(int id_group, int id_password){
+        Password grupo= getPasswordById(id_group);
+        List<Password> lista = grupo.getLista_password();
+        Password item_response=null;
+        for(Password i:lista){
+            if(i.getPassword_id()==id_password){
+               item_response=i;
             }
         }
         return item_response;
@@ -122,6 +166,19 @@ public class PasswordRepository
             }
         }
         setPasswordList(lista);
+    }
+
+    public void deleteItemInGroup(int id_group,int item){
+        Password grupo= getPasswordById(id_group);
+        List<Password> lista = grupo.getLista_password();
+        for(Password i:lista){
+            if(i.getPassword_id()==item){
+                lista.remove(i);
+                break;
+            }
+        }
+        grupo.setLista_password(lista);
+        updatePassword(grupo);
     }
 
     public String toJson(){

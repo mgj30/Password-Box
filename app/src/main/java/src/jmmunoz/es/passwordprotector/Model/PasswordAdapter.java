@@ -29,6 +29,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.jmmunoz.es.passwordprotector.EditGroupActivity;
 import src.jmmunoz.es.passwordprotector.EditPasswordActivity;
 import src.jmmunoz.es.passwordprotector.LoginActivity;
 import src.jmmunoz.es.passwordprotector.MainActivity;
@@ -50,6 +51,7 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
     private EncodeDecode decoder;
     private PasswordRepository rep;
     private int id_view;
+    private int item_group;
 
 
     private static class ViewHolder {
@@ -59,8 +61,10 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
         private TextView nombre;
     }
 
-    public PasswordAdapter(Context context, int textViewResourceId, FilePasswordManager fm,PasswordRepository rep) {
-        super(context, textViewResourceId, rep.getPasswordList());
+    public PasswordAdapter(Context context, int textViewResourceId, FilePasswordManager fm,PasswordRepository rep, int item_group) {
+
+        super(context, textViewResourceId, rep.getListOrGroup(item_group));
+        this.item_group=item_group;
         this.ctx=context;
         this.fm=fm;
         this.decoder= new EncodeDecode();
@@ -100,13 +104,12 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
             if(item.getPassword_type()==Password.TYPE_GROUP) {
                 Drawable res = ctx.getResources().getDrawable(ctx.getResources().getIdentifier(group_img, null, ctx.getPackageName()));
                 viewHolder.image.setImageDrawable(res);
-
+                viewHolder.elements.setText(item.getLista_password().size()+" - " + ctx.getResources().getString(R.string.elementos));
 
             }
             if(item.getPassword_type()==Password.TYPE_ITEM){
                 Drawable res = ctx.getResources().getDrawable(ctx.getResources().getIdentifier(password_img, null, ctx.getPackageName()));
                 viewHolder.image.setImageDrawable(res);
-
                 viewHolder.elements.setText("");
             }
 
@@ -117,31 +120,22 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
 
                     LinearLayout texto = (LinearLayout) view;
 
-                    Password p = rep.getPasswordById(texto.getId());
-                    if(p.getPassword_type()==Password.TYPE_ITEM) {
+                    Password p = null;
 
-                        Intent intent = new Intent(ctx, EditPasswordActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Bundle b = new Bundle();
-                        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
-                        b.putString("repositori_user", rep.getRepository_user()); //Your id
-                        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
-                        b.putInt("item_edit", texto.getId()); //Your id
-                        intent.putExtras(b); //Put your id to your next Intent
-                        ctx.startActivity(intent);
-                        ((Activity) ctx).finish();
-                    }else{
-                        Intent intent = new Intent(ctx, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Bundle b = new Bundle();
-                        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
-                        b.putString("repositori_user", rep.getRepository_user()); //Your id
-                        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
-                        b.putInt("item_group", texto.getId()); //Your id
-                        intent.putExtras(b); //Put your id to your next Intent
-                        ctx.startActivity(intent);
-                        ((Activity) ctx).finish();
+                    if(item_group==0) {
+                        p = rep.getPasswordById(texto.getId());
+
+                        if(p.getPassword_type()==Password.TYPE_ITEM)
+                            goToId(p);
+
+                        if(p.getPassword_type()==Password.TYPE_GROUP)
+                            goToGroup(p);
+
+                    }else {
+                        p = rep.getPasswordInGroupById(item_group, texto.getId());
+                        goToId(p);
                     }
+
                 }
             });
 
@@ -151,20 +145,69 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
                 public void onClick(View view) {
 
 
-                    LinearLayout texto = (LinearLayout) view;
-                    Intent intent = new Intent(ctx, EditPasswordActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Bundle b = new Bundle();
-                    b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
-                    b.putString("repositori_user", rep.getRepository_user()); //Your id
-                    b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
-                    b.putInt("item_edit", texto.getId()); //Your id
-                    intent.putExtras(b); //Put your id to your next Intent
-                    ctx.startActivity(intent);
-                    ((Activity)ctx).finish();
+                    ImageView texto = (ImageView) view;
+                    Password p = null;
+                    if(item_group==0) {
+                        p = rep.getPasswordById(texto.getId());
+
+                        if(p.getPassword_type()==Password.TYPE_GROUP)
+                            editGroup(p);
+
+                        if(p.getPassword_type()==Password.TYPE_ITEM)
+                            goToId(p);
+
+                    }else {
+                        p = rep.getPasswordInGroupById(item_group, texto.getId());
+
+                        if(p.getPassword_type()==Password.TYPE_GROUP)
+                            editGroup(p);
+
+                        if(p.getPassword_type()==Password.TYPE_ITEM)
+                            goToId(p);
+                    }
+
                 }
             });
         }
         return convertView;
+    }
+
+    public void goToId(Password p){
+        Intent intent = new Intent(ctx, EditPasswordActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle b = new Bundle();
+        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+        b.putString("repositori_user", rep.getRepository_user()); //Your id
+        b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+        b.putSerializable("password",p);
+        intent.putExtras(b); //Put your id to your next Intent
+        ctx.startActivity(intent);
+        ((Activity)ctx).finish();
+    }
+
+    public void editGroup(Password p){
+        Intent intent = new Intent(ctx, EditGroupActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle b = new Bundle();
+        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+        b.putString("repositori_user", rep.getRepository_user()); //Your id
+        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
+        b.putSerializable("password",p);
+        intent.putExtras(b); //Put your id to your next Intent
+        ctx.startActivity(intent);
+        ((Activity) ctx).finish();
+    }
+
+    public void goToGroup(Password p){
+        Intent intent = new Intent(ctx, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle b = new Bundle();
+        b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+        b.putString("repositori_user", rep.getRepository_user()); //Your id
+        b.putString("repositori_file", rep.getRepository_user() + ".keys"); //Your id
+        b.putSerializable("password",p);
+        intent.putExtras(b); //Put your id to your next Intent
+        ctx.startActivity(intent);
+        ((Activity) ctx).finish();
     }
 }
