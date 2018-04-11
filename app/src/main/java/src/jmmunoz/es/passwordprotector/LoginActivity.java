@@ -44,6 +44,7 @@ import java.util.List;
 
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
+import src.jmmunoz.es.passwordprotector.Utils.Constants;
 import src.jmmunoz.es.passwordprotector.Utils.EncodeDecode;
 import src.jmmunoz.es.passwordprotector.Utils.FilePasswordManager;
 
@@ -78,7 +79,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
+
+        if(Constants.PUBLICIDAD)
+            MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
+
         LoadPreferences();
         fm= new FilePasswordManager(getApplicationContext());
         decoder=new EncodeDecode();

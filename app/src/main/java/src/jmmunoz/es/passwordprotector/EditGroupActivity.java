@@ -50,9 +50,9 @@ public class EditGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
-        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL);
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
+
+        if(Constants.PUBLICIDAD)
+            MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
 
         mAdView = findViewById(R.id.adView_password);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -142,6 +142,8 @@ public class EditGroupActivity extends AppCompatActivity {
                 }
             }
         });
+
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,getApplicationContext(),rep);
     }
 
     private void borrarPassword() {
