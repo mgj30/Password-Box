@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="src.jmmunoz.es.passwordprotector.GenerateActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="37dp">
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/checkBox2"
+            android:layout_below="@+id/checkBox2"
+            android:padding="10dp"
+            android:text="@string/numeros" />
+
+        <CheckBox
+            android:id="@+id/checkBox4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/checkBox3"
+            android:layout_below="@id/checkBox3"
+            android:padding="10dp"
+            android:text="@string/solo_numeros" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/checkBox1"
+            android:layout_below="@+id/checkBox1"
+            android:padding="10dp"
+            android:text="@string/simbolos" />
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:text="@string/mayusculas" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/textView"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:min="1"
+            android:max="50"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/checkBox4"
+            android:layout_below="@+id/checkBox4"
+            android:layout_marginTop="10dp"
+            android:text="@string/longitud" />
+
+        <Button
+            android:id="@+id/btngrabar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/save_label"
+            android:textColor="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/btncerrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/colorPrimary"
+            android:text="@android:string/cancel"
+            android:textColor="@android:color/background_light" />
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textView5"
+            android:layout_alignStart="@+id/seekBar"
+            android:layout_below="@+id/generate_btn"
+            android:layout_marginTop="10dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-2198662666880421/3663600734"
+            ads:layout_anchor="@+id/include"
+            ads:layout_anchorGravity="bottom|center"
+            tools:layout_editor_absoluteX="-134dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/textView"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_marginStart="18dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:text="@string/password_label" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/seekBar"
+            android:layout_alignTop="@+id/textView4"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/textView4"
+            android:text="TextView" />
+
+        <Button
+            android:id="@+id/generate_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:padding="10dp"
+            android:text="@string/generar"
+            android:textColor="@android:color/background_light" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
