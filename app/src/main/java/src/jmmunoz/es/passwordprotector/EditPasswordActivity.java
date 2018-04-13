@@ -313,8 +313,8 @@ public class EditPasswordActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         Random rn = new Random();
-        int answer = rn.nextInt(100) + 1;
-        if(answer>0 && answer<26) {
+        int answer = rn.nextInt(4) + 1;
+        if(answer==1) {
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             }
