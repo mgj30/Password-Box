@@ -229,9 +229,14 @@ public class EditPasswordActivity extends AppCompatActivity {
                     startActivity(intent);
                     setResult(RESULT_OK,intent);
                     finish();
+
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+
+
             }
         });
 
@@ -250,6 +255,8 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,getApplicationContext(),rep);
     }
+
+
 
     private void borrarPassword() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
