@@ -14,10 +14,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
+
+import java.util.Random;
 
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
@@ -44,15 +48,28 @@ public class EditGroupActivity extends AppCompatActivity {
     private AdView mAdView;
 
     private MyCountDownTimer countDownTimer;
-
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
 
-        if(Constants.PUBLICIDAD)
+        if(Constants.PUBLICIDAD) {
             MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-2198662666880421/2363435232");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+            mInterstitialAd.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdClosed() {
+                    cerrar();
+                }
+            });
+        }
 
         mAdView = findViewById(R.id.adView_password);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -81,15 +98,7 @@ public class EditGroupActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EditGroupActivity.this, MainActivity.class);
-                Bundle b = new Bundle();
-                b.putString("repositori_pass", repositori_pass);
-                b.putString("repositori_user", repositori_user);
-                b.putString("repositori_file", repositori_file);
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
-                setResult(RESULT_OK,intent);
-                finish();
+                onBackPressed();
             }
         });
 
@@ -194,17 +203,32 @@ public class EditGroupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        Random rn = new Random();
+        int answer = rn.nextInt(100) + 1;
+        if(answer>0 && answer<26) {
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
+        }else{
+            cerrar();
+        }
+    }
+    public void cerrar(){
         Intent intent = new Intent(EditGroupActivity.this, MainActivity.class);
         Bundle b = new Bundle();
         b.putString("repositori_pass", rep.getRepositoryCode().toString());
         b.putString("repositori_user", rep.getRepository_user().toString());
         b.putString("repositori_file", rep.getRepository_user().toString()+ ".keys");
+        if(p_param!=null && p_param.getId_padre()!=0){
+            Password padre = rep.getPasswordById(p_param.getId_padre());
+            b.putSerializable("password", padre);
+        }
         intent.putExtras(b);
         setResult(RESULT_OK,intent);
         startActivity(intent);
         finish();
-
     }
+
     @Override
     public void onUserInteraction(){
         super.onUserInteraction();

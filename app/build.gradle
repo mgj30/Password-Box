@@ -14,7 +14,6 @@ android {
         throw new FileNotFoundException("Could not read version.properties!")
     }
 
-
     /*Wrapping inside a method avoids auto incrementing on every gradle task run. Now it runs only when we build apk*/
     ext.autoIncrementBuildNumber = {
 
@@ -33,11 +32,11 @@ android {
         minSdkVersion 18
         targetSdkVersion 26
         versionCode versionBuild
-        versionName "1.0."+versionBuild
+        versionName "1.0." + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    gradle.taskGraph.whenReady {taskGraph ->
+    gradle.taskGraph.whenReady { taskGraph ->
         if (taskGraph.hasTask(assembleDebug)) {  /* when run debug task */
             autoIncrementBuildNumber()
         } else if (taskGraph.hasTask(assembleRelease)) { /* when run release task */

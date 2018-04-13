@@ -33,6 +33,7 @@
     <string name="save_label">Save</string>
     <string name="delete_label">Delete</string>
     <string name="cancel_label">Cancel</string>
+
     <!-- Strings related to login -->
     <string name="password">Password</string>
     <string name="description">Password</string>
@@ -55,6 +56,13 @@
     <string name="add_password">Add new password</string>
 
     <string name="elementos">Passwords</string>
+
+    <string name="generar">Generate password</string>
+    <string name="mayusculas">Mayúsculas</string>
+    <string name="simbolos">Simbolos</string>
+    <string name="numeros">Números</string>
+    <string name="longitud">Longitud</string>
+    <string name="solo_numeros">Solo Números</string>
 
 
 

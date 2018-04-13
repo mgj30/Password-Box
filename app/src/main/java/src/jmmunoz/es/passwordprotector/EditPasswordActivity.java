@@ -5,8 +5,6 @@ import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
+import java.util.Random;
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordRepository;
 import src.jmmunoz.es.passwordprotector.Utils.Constants;
@@ -46,11 +46,13 @@ public class EditPasswordActivity extends AppCompatActivity {
     public Button button_save ;
     public Button delete_button ;
     public Button cancel_button ;
+    public Button generate ;
     public Password p;
     public Password p_param;
     private AdView mAdView;
 
     private MyCountDownTimer countDownTimer;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,21 @@ public class EditPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_password);
 
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        if(Constants.PUBLICIDAD)
+        if(Constants.PUBLICIDAD) {
             MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-2198662666880421/2363435232");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+            mInterstitialAd.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdClosed() {
+                    cerrar();
+                }
+            });
+        }
 
         mAdView = findViewById(R.id.adView_password);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -135,15 +150,16 @@ public class EditPasswordActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
-                Bundle b = new Bundle();
-                b.putString("repositori_pass", repositori_pass);
-                b.putString("repositori_user", repositori_user);
-                b.putString("repositori_file", repositori_file);
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
-                setResult(RESULT_OK,intent);
-                finish();
+                onBackPressed();
+            }
+        });
+
+        generate= (Button) findViewById(R.id.random_password);
+        generate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditPasswordActivity.this, GenerateActivity.class);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -289,16 +305,32 @@ public class EditPasswordActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        Random rn = new Random();
+        int answer = rn.nextInt(100) + 1;
+        if(answer>0 && answer<26) {
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
+        }else{
+            cerrar();
+        }
+
+    }
+
+    public void cerrar(){
         Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
         Bundle b = new Bundle();
         b.putString("repositori_pass", rep.getRepositoryCode().toString());
         b.putString("repositori_user", rep.getRepository_user().toString());
         b.putString("repositori_file", rep.getRepository_user().toString()+ ".keys");
+        if(p_param!=null && p_param.getId_padre()!=0){
+            Password padre = rep.getPasswordById(p_param.getId_padre());
+            b.putSerializable("password", padre);
+        }
         intent.putExtras(b);
         setResult(RESULT_OK,intent);
         startActivity(intent);
         finish();
-
     }
 
     @Override
@@ -318,6 +350,16 @@ public class EditPasswordActivity extends AppCompatActivity {
                     repositori_pass), PasswordRepository.class);
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String returnedResult = data.getData().toString();
+                password_text.setText(returnedResult);
+            }
         }
     }
 }

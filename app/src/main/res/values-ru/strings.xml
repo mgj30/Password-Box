@@ -9,6 +9,7 @@
     <string name="prompt_password">Пароль</string>
     <string name="action_sign_in">Войти</string>
     <string name="action_register">Создать</string>
+    <string name="generar">Создать пароль</string>
     <!-- Valores de la ventana edicion-->
     <string name="name_label">Название</string>
     <string name="url_label">URL</string>
@@ -54,4 +55,11 @@
     <string name="add_password">Новый пароль</string>
 
     <string name="elementos">Пароли</string>
+
+    <string name="mayusculas">Mayúsculas</string>
+    <string name="simbolos">Simbolos</string>
+    <string name="numeros">Números</string>
+    <string name="longitud">Longitud</string>
+    <string name="solo_numeros">Solo Números</string>
+
 </resources>
