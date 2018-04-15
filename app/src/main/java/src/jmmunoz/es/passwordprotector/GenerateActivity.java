@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +16,7 @@ import com.google.android.gms.ads.MobileAds;
 import java.util.Random;
 
 import src.jmmunoz.es.passwordprotector.Utils.Constants;
+import src.jmmunoz.es.passwordprotector.Utils.MyCountDownTimer;
 
 public class GenerateActivity extends AppCompatActivity {
 
@@ -32,6 +34,8 @@ public class GenerateActivity extends AppCompatActivity {
 
     private String password;
 
+    private MyCountDownTimer countDownTimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class GenerateActivity extends AppCompatActivity {
             MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
         }
         iniciarControles();
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,this,null);
     }
 
     public void iniciarControles(){
@@ -206,5 +211,24 @@ public class GenerateActivity extends AppCompatActivity {
         data.setData(Uri.parse(password));
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    @Override
+    public void onUserInteraction(){
+        super.onUserInteraction();
+
+        //Reset the timer on user interaction...
+        countDownTimer.cancel();
+        countDownTimer.start();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

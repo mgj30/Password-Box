@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.util.Log;
 import com.google.gson.Gson;
 import src.jmmunoz.es.passwordprotector.Model.Password;
 import src.jmmunoz.es.passwordprotector.Model.PasswordAdapter;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         CargarRepositorio();
         InicilizarComponentes();
 
-        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,getApplicationContext(),rep);
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,this,rep);
     }
 
 
@@ -254,6 +255,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     public void onUserInteraction(){
         super.onUserInteraction();
@@ -261,5 +263,16 @@ public class MainActivity extends AppCompatActivity
         //Reset the timer on user interaction...
         countDownTimer.cancel();
         countDownTimer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

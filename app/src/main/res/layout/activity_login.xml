@@ -11,7 +11,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     tools:context="src.jmmunoz.es.passwordprotector.LoginActivity">
-vv
+
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_progress"
@@ -112,8 +112,8 @@ vv
                 ads:layout_anchorGravity="bottom|center"
                 tools:layout_editor_absoluteX="-134dp"></com.google.android.gms.ads.AdView>
 
-
         </LinearLayout>
+
 
 
     </ScrollView>

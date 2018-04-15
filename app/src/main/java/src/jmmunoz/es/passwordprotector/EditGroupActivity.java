@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +49,6 @@ public class EditGroupActivity extends AppCompatActivity {
     private AdView mAdView;
 
     private MyCountDownTimer countDownTimer;
-    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +58,6 @@ public class EditGroupActivity extends AppCompatActivity {
         if(Constants.PUBLICIDAD) {
             MobileAds.initialize(this, "ca-app-pub-2198662666880421~4644250735");
 
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-2198662666880421/2363435232");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-            mInterstitialAd.setAdListener(new AdListener() {
-
-                @Override
-                public void onAdClosed() {
-                    cerrar();
-                }
-            });
         }
 
         mAdView = findViewById(R.id.adView_password);
@@ -152,7 +141,7 @@ public class EditGroupActivity extends AppCompatActivity {
             }
         });
 
-        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,getApplicationContext(),rep);
+        countDownTimer = new MyCountDownTimer(Constants.END_TIME, Constants.INTERVAL,this,rep);
     }
 
     private void borrarPassword() {
@@ -202,16 +191,7 @@ public class EditGroupActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        Random rn = new Random();
-        int answer = rn.nextInt(4) + 1;
-        if(answer==1) {
-            if (mInterstitialAd.isLoaded()) {
-                mInterstitialAd.show();
-            }
-        }else{
             cerrar();
-        }
     }
     public void cerrar(){
         Intent intent = new Intent(EditGroupActivity.this, MainActivity.class);
@@ -246,5 +226,16 @@ public class EditGroupActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

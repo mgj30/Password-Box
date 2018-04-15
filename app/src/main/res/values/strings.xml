@@ -58,11 +58,11 @@
     <string name="elementos">Passwords</string>
 
     <string name="generar">Generate password</string>
-    <string name="mayusculas">Mayúsculas</string>
-    <string name="simbolos">Simbolos</string>
-    <string name="numeros">Números</string>
-    <string name="longitud">Longitud</string>
-    <string name="solo_numeros">Solo Números</string>
+    <string name="mayusculas">Uppercase</string>
+    <string name="simbolos">Symbols</string>
+    <string name="numeros">Numbers</string>
+    <string name="longitud">Length</string>
+    <string name="solo_numeros">Only Numbers</string>
 
 
 

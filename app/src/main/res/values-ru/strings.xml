@@ -56,10 +56,10 @@
 
     <string name="elementos">Пароли</string>
 
-    <string name="mayusculas">Mayúsculas</string>
-    <string name="simbolos">Simbolos</string>
-    <string name="numeros">Números</string>
-    <string name="longitud">Longitud</string>
-    <string name="solo_numeros">Solo Números</string>
+    <string name="mayusculas">Верхний Регистр</string>
+    <string name="simbolos">Символы</string>
+    <string name="numeros">Цифры</string>
+    <string name="longitud">Длина</string>
+    <string name="solo_numeros">Только Цифры</string>
 
 </resources>

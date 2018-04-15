@@ -1,11 +1,14 @@
 package src.jmmunoz.es.passwordprotector.Utils;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.IntentCompat;
 
+import src.jmmunoz.es.passwordprotector.EditGroupActivity;
 import src.jmmunoz.es.passwordprotector.EditPasswordActivity;
 import src.jmmunoz.es.passwordprotector.LoginActivity;
 import src.jmmunoz.es.passwordprotector.MainActivity;
@@ -26,11 +29,18 @@ public class MyCountDownTimer  extends CountDownTimer {
 
     @Override
     public void onFinish() {
-        android.os.Process.killProcess(android.os.Process.myPid());
-        Intent intent = new Intent(ctx.getApplicationContext(), LoginActivity.class);
 
-        ctx.startActivity(intent);
-        ((Activity)ctx).finish();
+       //
+        /*Intent intent = new Intent(ctx.getApplicationContext(), LoginActivity.class);
+        Bundle b = new Bundle();
+        b.putString("close_app", "S");
+        intent.putExtras(b);
+        ComponentName cn = intent.getComponent();
+        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+        ctx.startActivity(mainIntent);*/
+
+
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override

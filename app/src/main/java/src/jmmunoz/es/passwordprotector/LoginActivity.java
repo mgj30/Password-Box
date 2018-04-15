@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
 
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
@@ -239,6 +240,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
     }
+
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -432,6 +435,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
+
     }
 }
 
