@@ -64,6 +64,8 @@
     <string name="longitud">Length</string>
     <string name="solo_numeros">Only Numbers</string>
 
+    <string name="permision_title">Disck access permission</string>
+    <string name="permision_mensaje">This application need access to disk for save your file with passwords</string>
 
 
 </resources>

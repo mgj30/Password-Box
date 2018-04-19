@@ -62,4 +62,7 @@
     <string name="longitud">Длина</string>
     <string name="solo_numeros">Только Цифры</string>
 
+    <string name="permision_title">Разрешений</string>
+    <string name="permision_mensaje">Для корректного пользования программой необходимо дать разрешение на использование SD card</string>
+
 </resources>

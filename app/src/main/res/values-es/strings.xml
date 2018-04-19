@@ -65,4 +65,7 @@
     <string name="solo_numeros">Solo Números</string>
 
 
+    <string name="permision_title">Permisos de Acceso al Disco</string>
+    <string name="permision_mensaje">La aplicación necesita permisos de acceso al disco para guardar el archivo de contraseñas</string>
+
 </resources>

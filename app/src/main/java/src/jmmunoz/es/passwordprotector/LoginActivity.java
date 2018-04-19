@@ -1,16 +1,21 @@
 package src.jmmunoz.es.passwordprotector;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -54,6 +59,10 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+
+    private static final int LOGIN = 1 ;
+    private static final int REGISTER = 2 ;
 
 
     private FilePasswordManager fm;
@@ -107,7 +116,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         login_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle(R.string.permision_title);
+                builder.setMessage(R.string.permision_mensaje);
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+
+                            if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(LoginActivity.this,
+                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        LOGIN);
+
+                            }else {
+                                attemptLogin();
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                        dialog.dismiss();
+                    }
+                });
+                android.support.v7.app.AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+
             }
         });
 
@@ -115,7 +159,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         register_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrar();
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle(R.string.permision_title);
+                builder.setMessage(R.string.permision_mensaje);
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+
+                            if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(LoginActivity.this,
+                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        REGISTER);
+
+                            }else {
+                                registrar();
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                        dialog.dismiss();
+                    }
+                });
+                android.support.v7.app.AlertDialog dialog = builder.create();
+                dialog.show();
+
+
             }
         });
         how_work= (Button) findViewById(R.id.how_work);
@@ -137,6 +215,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mAdView.loadAd(adRequest);
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LOGIN: {
+                if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    attemptLogin();
+                }
+                return;
+            } case REGISTER: {
+                // If request is cancelled, the result arrays are empty.
+                if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    registrar();
+                }
+                return;
+            }
+        }
     }
 
     private void LoadPreferences(){
