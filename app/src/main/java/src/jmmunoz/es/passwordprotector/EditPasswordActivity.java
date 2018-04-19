@@ -285,7 +285,6 @@ public class EditPasswordActivity extends AppCompatActivity {
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO
                 dialog.dismiss();
             }
         });
