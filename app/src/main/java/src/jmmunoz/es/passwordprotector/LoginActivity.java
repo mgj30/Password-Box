@@ -116,41 +116,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         login_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle(R.string.permision_title);
+                    builder.setMessage(R.string.permision_mensaje);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            try {
 
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
-                builder.setTitle(R.string.permision_title);
-                builder.setMessage(R.string.permision_mensaje);
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try {
 
-                            if (ContextCompat.checkSelfPermission(LoginActivity.this,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    != PackageManager.PERMISSION_GRANTED) {
 
-                                ActivityCompat.requestPermissions(LoginActivity.this,
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        LOGIN);
+                                    ActivityCompat.requestPermissions(LoginActivity.this,
+                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            LOGIN);
 
-                            }else {
-                                attemptLogin();
+
+
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
-
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //TODO
-                        dialog.dismiss();
-                    }
-                });
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //TODO
+                            dialog.dismiss();
+                        }
+                    });
+                    android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.show();
 
-
+                }else {
+                    attemptLogin();
+                }
 
             }
         });
@@ -160,39 +160,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
 
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
-                builder.setTitle(R.string.permision_title);
-                builder.setMessage(R.string.permision_mensaje);
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try {
+                if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle(R.string.permision_title);
+                    builder.setMessage(R.string.permision_mensaje);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            try {
 
-                            if (ContextCompat.checkSelfPermission(LoginActivity.this,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    != PackageManager.PERMISSION_GRANTED) {
 
-                                ActivityCompat.requestPermissions(LoginActivity.this,
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        REGISTER);
 
-                            }else {
-                                registrar();
+                                    ActivityCompat.requestPermissions(LoginActivity.this,
+                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            REGISTER);
+
+
+
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
-
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //TODO
-                        dialog.dismiss();
-                    }
-                });
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
-
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //TODO
+                            dialog.dismiss();
+                        }
+                    });
+                    android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.show();
+                }else {
+                    registrar();
+                }
 
             }
         });
@@ -223,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             case LOGIN: {
                 if (ContextCompat.checkSelfPermission(LoginActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        == PackageManager.PERMISSION_GRANTED) {
                     attemptLogin();
                 }
                 return;
@@ -231,7 +232,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // If request is cancelled, the result arrays are empty.
                 if (ContextCompat.checkSelfPermission(LoginActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        == PackageManager.PERMISSION_GRANTED) {
                     registrar();
                 }
                 return;
