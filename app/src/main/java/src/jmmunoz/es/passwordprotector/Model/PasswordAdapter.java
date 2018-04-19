@@ -56,6 +56,7 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
 
     private static class ViewHolder {
         private ImageView image;
+
         private ImageView edit;
         private TextView elements;
         private TextView nombre;
@@ -84,6 +85,7 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
             viewHolder.image = (ImageView) convertView.findViewById(R.id.imagen);
             viewHolder.elements = (TextView) convertView.findViewById(R.id.elements);
             viewHolder.edit= (ImageView) convertView.findViewById(R.id.edit);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -138,6 +140,7 @@ public class PasswordAdapter extends ArrayAdapter<Password> {
 
                 }
             });
+
 
             viewHolder.edit.setId(item.getPassword_id());
             viewHolder.edit.setOnClickListener(new View.OnClickListener() {
