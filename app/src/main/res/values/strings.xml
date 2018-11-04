@@ -54,6 +54,7 @@
     <string name="home">Home</string>
     <string name="add_group">Add new group</string>
     <string name="add_password">Add new password</string>
+    <string name="settings">Settings</string>
 
     <string name="elementos">Passwords</string>
 

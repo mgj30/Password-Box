@@ -43,7 +43,7 @@
     <string name="label_combo">Tipo de Autenticación</string>
     <string name="registrarse">Создать</string>
     <string name="remember">Сохранить?</string>
-    <string name="action_sign_in_short">Войти</string>
+    <string name="action_sign_in_short">Войти</string>Settings
     <string name="error_invalid_email">Электронная почта не существует</string>
     <string name="error_invalid_password">Пароль слишком короткий, должно быть не менее 6 символов</string>
     <string name="error_incorrect_password">Неверный пароль</string>
@@ -53,6 +53,7 @@
     <string name="home">Главная</string>
     <string name="add_group">Создать группу</string>
     <string name="add_password">Новый пароль</string>
+    <string name="settings">Настройки</string>
 
     <string name="elementos">Пароли</string>
 

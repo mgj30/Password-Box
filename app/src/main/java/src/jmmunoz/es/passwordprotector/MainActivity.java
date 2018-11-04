@@ -241,9 +241,18 @@ public class MainActivity extends AppCompatActivity
             intent.putExtras(b); //Put your id to your next Intent
             startActivity(intent);
             finish();
-        }/* else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            Bundle b = new Bundle();
+            b.putString("repositori_pass", rep.getRepositoryCode()); //Your id
+            b.putString("repositori_user", rep.getRepository_user()); //Your id
+            b.putString("repositori_file", rep.getRepository_user()+ ".keys"); //Your id
+            b.putSerializable("password", p_param);
 
-        } else if (id == R.id.nav_manage) {
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
+        } /*else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
@@ -255,6 +264,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onUserInteraction(){

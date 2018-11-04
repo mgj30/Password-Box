@@ -16,6 +16,10 @@
             android:id="@+id/new_password"
             android:icon="@android:drawable/ic_lock_idle_lock"
             android:title="@string/add_password" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/settings" />
     </group>
 
     <!--<item android:title="Communicate">

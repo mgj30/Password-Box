@@ -44,6 +44,10 @@
         <activity android:name=".EditGroupActivity" />
         <activity android:name=".HowWorkActivity" />
         <activity android:name=".GenerateActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
